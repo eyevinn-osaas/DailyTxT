@@ -33,6 +33,7 @@ COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /root/.local/ /root/.local/
 ENV PATH=/root/.local/bin:$PATH
 COPY ./server .
+ENV ALLOW_REGISTRATION=True
 CMD gunicorn -b 0.0.0.0:5000 'dailytxt.application:create_app()' --daemon && \
     sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && \
     nginx -g 'daemon off;'
